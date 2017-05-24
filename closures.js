@@ -128,11 +128,13 @@ function motivation(firstname, lastname) {
 
   var welcomeText = 'You\'re doing awesome, keep it up ';
 
-  // code message function here.
+  function message() {
+    return welcomeText + firstname + " " + lastname + '.';
+  }
 
 
   //Uncommment this to return the value of your invoked message function
-  //return message();
+  return message();
 
 }
 
@@ -170,10 +172,14 @@ var module = (function() {
   // Anything that is being returned is made public and can be invoked from
   // outside our lexical scope
   return {
-    // Code here.
+    publicMethod: function() {
+      return privateMethod()
+    } 
   };
 
 })();
+
+module.publicMethod();
 
 
 
@@ -191,12 +197,17 @@ var allUsers = ["Tom", "Dick", "Harry", "Anne", "Quinton", "Katie", "Mary"];
 
 function findPotentialFriends(existingFriends) {
 
+  return function(friend) {
+    return (!existingFriends.includes(friend))
+  }
 }
+
+//findPotentialFriends(secondLevelFriends)
 
 var isNotAFriend = findPotentialFriends( friends );
 // isNotAFriend(allUsers[0]); // false
 // isNotAFriend(secondLevelFriends[2]); // true
-
+// isNotAFriend(allUsers[0])
 
 /******************************************************************************\
  #PROBLEM-07 -- BLACK DIAMOND
@@ -205,8 +216,8 @@ var isNotAFriend = findPotentialFriends( friends );
 method, find all potential second level friends as well as potential friends
 from allUsers. */
 
-var potentialSecondLevelFriends = "?";
-var allPotentialFriends = "?";
+var potentialSecondLevelFriends = secondLevelFriends.filter(isNotAFriend);
+var allPotentialFriends = allUsers.filter(isNotAFriend);
 
 
 /******************************************************************************\
@@ -231,9 +242,10 @@ to 5. What we need to do is console.log(i) so that it logs like so:
 
 function timeOutCounter() {
   for (var i = 0; i <= 5; i++) {
+    (function set(j) {
     setTimeout(function() {
-    	console.log(i)
-	}, i * 1000)
-  }
-}
-timeOutCounter();
+    	console.log(j)
+	}, j * 1000) }
+  )(i)
+    
+}}
